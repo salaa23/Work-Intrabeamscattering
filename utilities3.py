@@ -173,10 +173,11 @@ class _collective_():
         # ICI ON APPELE BEAM PARAM 
         self.param.set_param()
         self.param.read_param(self.mode)
-        print(vars(self.param))
+        # print(vars(self.param))
         ###########
         for key, value in self.param.__dict__.items():
             setattr(self, key, value) 
+            print(f"{key}:{value}")
         self.limit_z = 3 * self.sigmaz
         if self.kernel == 'gpu':
             self.context = xo.ContextCupy()
