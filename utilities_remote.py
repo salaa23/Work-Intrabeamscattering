@@ -161,7 +161,7 @@ class _collective_():
         self.slicing_mode = 'fixed_cuts' # can be 'fixed_cuts' or 'from_first_to_last_particles'
         self.fixed_cuts_perc_min_max = 0.50
         # chunk size for tracking
-        self.chunk_size = 1
+        self.chunk_size = 500
         # IBS parameters
         self.n_slices_ibs = 50
         self.ibs_formalism = 'nagaitsev' # can be 'nagaitsev' or 'kinetic'
@@ -507,5 +507,5 @@ class _collective_():
         curren_dir=os.path.dirname(os.getcwd())
         job_id = os.environ.get("SLURM_JOB_ID")
         # dump_data('/home/salahfd/_outputs/output_'+temps+'.json', output)
-        dump_data(curren_dir + "/Salah/_outputs/output_"+temps+"_job_"+job_id+'.json', output)
+        dump_data(curren_dir + "/Salah/_outputs/output_xsuite_"+temps+"_job_"+job_id+'.json', output)
         print("Done!")
