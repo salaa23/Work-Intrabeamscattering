@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.constants import c, m_e, elementary_charge
 import h5py as hp
-import matplotlib.pyplot as plt
 from mbtrack2 import Synchrotron, Electron
 from mbtrack2.utilities import Optics
 from mbtrack2.impedance.wakefield import WakeField
@@ -177,7 +176,8 @@ def run_mbtrack2(
     job_id = os.environ.get("SLURM_JOB_ID")
     file_path = os.path.dirname(os.getcwd())
     temps = time.strftime("%y%m%d_%H%M%S", time.localtime())
-    monitor = BunchMonitor(1, 1,buffer_size=10, total_size=n_turns, file_name=file_path+"/Salah/mbtrack2_outputs/" modelname+"_"+temps+"_"+job_id)
+    file_name = str(file_path + "/Salah/mbtrack2_outputs/" +modelname+"_"+temps+"_"+job_id)
+    monitor = BunchMonitor(1, 1,buffer_size=10, total_size=n_turns, file_name=file_name)
     ###--------------------------------------------------------------------------------------------------------------
 
 
@@ -185,6 +185,7 @@ def run_mbtrack2(
         for el in tracking_elements:
             el.track(mybunch)
         monitor.track(mybunch)
+    return file_name
 
 
 if __name__ == "__main__":
@@ -199,7 +200,7 @@ if __name__ == "__main__":
 
 args = parser.parse_args()
 
-bunch = run_mbtrack2(n_turns=args.n_turns,
+file_name = run_mbtrack2(n_turns=args.n_turns,
     n_macroparticles=args.n_macroparticles,
     bunch_current=args.bunch_current, modelname=args.modelname)
 
@@ -209,3 +210,29 @@ print(f"number of turns: {args.n_turns}")
 print(f"number of macroparticles: {args.n_macroparticles}")
 print(f"bunch current(A): {args.bunch_current}")
 print(f"model: {args.modelname}")
+
+import matplotlib
+matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
+
+job_id = os.environ.get("SLURM_JOB_ID")
+
+
+with h5py.File(file_name + '.hdf5', 'r') as f:
+    # print("Keys: %s" % f.keys())
+    # print(f.keys())
+    group = f["BunchData_1"]
+    print(group)
+    emit = group["emit"][:]
+    current = f["BunchData_1"]["current"][0]
+    emit = np.array(emit)
+
+elements = ["x","y","s"]
+for i in range(3):
+    plt.plot(emit[i,:]*1e12)
+    plt.ylabel(f"Emittance epsilon_{elements[i]}(pm)")
+    plt.title(f"Emittance of V24 mbt2 at {current*1e3}mA using {args.modelname}")
+    plt.xlabel("Number of turns")
+    plt.figure(figsize=(8,6))
+    plt.savefig(f"/Salah/mbtrack2_outputs/figures/fig_{temps}_{job_id}_cpl.png")
