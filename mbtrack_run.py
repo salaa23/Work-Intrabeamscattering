@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.constants import c, m_e, elementary_charge
-import h5py as hp
+import h5py
 from mbtrack2 import Synchrotron, Electron
 from mbtrack2.utilities import Optics
 from mbtrack2.impedance.wakefield import WakeField
@@ -181,11 +181,11 @@ def run_mbtrack2(
     ###--------------------------------------------------------------------------------------------------------------
 
 
-    for i in trange(n_turns):
+    for i in tqdm(range(n_turns)):
         for el in tracking_elements:
             el.track(mybunch)
         monitor.track(mybunch)
-    return file_name
+    return file_name, temps
 
 
 if __name__ == "__main__":
@@ -201,7 +201,7 @@ if __name__ == "__main__":
 args = parser.parse_args()
 
 print("running sim ...")
-file_name = run_mbtrack2(n_turns=args.n_turns,
+file_name, temps = run_mbtrack2(n_turns=args.n_turns,
     n_macroparticles=args.n_macroparticles,
     bunch_current=args.bunch_current, modelname=args.modelname)
 
@@ -229,13 +229,15 @@ with h5py.File(file_name + '.hdf5', 'r') as f:
     current = f["BunchData_1"]["current"][0]
     emit = np.array(emit)
 
+
+current_dir = os.getcwd()
 elements = ["x","y","s"]
 for i in range(3):
+    plt.figure(figsize=(8,6))
     plt.plot(emit[i,:]*1e12)
     plt.ylabel(f"Emittance epsilon_{elements[i]}(pm)")
     plt.title(f"Emittance of V24 mbt2 at {current*1e3}mA using {args.modelname}")
     plt.xlabel("Number of turns")
-    plt.figure(figsize=(8,6))
-    plt.savefig(f"/m4cast/figures/fig_{temps}_{job_id}_cpl.png")
+    plt.savefig(f"{current_dir}/m4cast/figures/fig_{temps}_{job_id}_cpl.png")
 
 print("Done!")
