@@ -3,6 +3,9 @@
 # SLURM options:
 
 #SBATCH --job-name=XT_13mA    # Nom du job
+
+
+
 #SBATCH --output=./logs/Output_%j_%x.log   # Standard output et error log
 #SBATCH --error=./logs/Error_%j_%x.log
 #SBATCH --partition=htc               # Choix de partition (htc par défaut)
