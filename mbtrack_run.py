@@ -44,9 +44,9 @@ def v24(IDs="close", lat="V004", load_lattice=True):
     
     if load_lattice:
         if IDs=="close":
-            lattice_file = "V24_1FODO_02.mat"
+            lattice_file = "m4cast/lattice/V24_1FODO_02.mat"
         else:
-            lattice_file = "V24_1FODO_02.mat"
+            lattice_file = "m4cast/lattice/V24_1FODO_02.mat"
     
         # mean values
         # alpha = np.array([0, 0])
@@ -95,9 +95,9 @@ def v3588(IDs="close", lat="V004", load_lattice=True):
     
     if load_lattice:
         if IDs=="close":
-            lattice_file = "V3588_RING_for_Salah.mat"
+            lattice_file = "m4cast/lattice/V3588_RING_for_Salah.mat"
         else:
-            lattice_file = "V3588_RING_for_Salah.mat"
+            lattice_file = "m4cast/lattice/V3588_RING_for_Salah.mat"
     
         # mean values
         alpha = np.array([0, 0])
@@ -174,9 +174,9 @@ def run_mbtrack2(
 
     ##ibs track-------------------------------------------------------------------------------------
     job_id = os.environ.get("SLURM_JOB_ID")
-    file_path = os.path.dirname(os.getcwd())
+    file_path = os.getcwd()
     temps = time.strftime("%y%m%d_%H%M%S", time.localtime())
-    file_name = file_path + "/Salah/mbtrack2_outputs/" + modelname + "_" + str(temps) +"_"+ str(job_id)
+    file_name = file_path + "/m4cast/outputs/" + modelname + "_" + str(temps) +"_"+ str(job_id)
     monitor = BunchMonitor(1, 1,buffer_size=10, total_size=n_turns, file_name=file_name)
     ###--------------------------------------------------------------------------------------------------------------
 
@@ -236,6 +236,6 @@ for i in range(3):
     plt.title(f"Emittance of V24 mbt2 at {current*1e3}mA using {args.modelname}")
     plt.xlabel("Number of turns")
     plt.figure(figsize=(8,6))
-    plt.savefig(f"/Salah/mbtrack2_outputs/figures/fig_{temps}_{job_id}_cpl.png")
+    plt.savefig(f"/m4cast/figures/fig_{temps}_{job_id}_cpl.png")
 
 print("Done!")
