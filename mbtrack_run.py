@@ -16,7 +16,7 @@ import time
 import argparse
 import os
 
-
+print("initializing ...")
 def v24(IDs="close", lat="V004", load_lattice=True):
     """
     Fcc-ee booster lattice to load with AT
@@ -176,7 +176,7 @@ def run_mbtrack2(
     job_id = os.environ.get("SLURM_JOB_ID")
     file_path = os.path.dirname(os.getcwd())
     temps = time.strftime("%y%m%d_%H%M%S", time.localtime())
-    file_name = str(file_path + "/Salah/mbtrack2_outputs/" +modelname+"_"+temps+"_"+job_id)
+    file_name = file_path + "/Salah/mbtrack2_outputs/" + modelname + "_" + str(temps) +"_"+ str(job_id)
     monitor = BunchMonitor(1, 1,buffer_size=10, total_size=n_turns, file_name=file_name)
     ###--------------------------------------------------------------------------------------------------------------
 
@@ -200,6 +200,7 @@ if __name__ == "__main__":
 
 args = parser.parse_args()
 
+print("running sim ...")
 file_name = run_mbtrack2(n_turns=args.n_turns,
     n_macroparticles=args.n_macroparticles,
     bunch_current=args.bunch_current, modelname=args.modelname)
@@ -211,6 +212,7 @@ print(f"number of macroparticles: {args.n_macroparticles}")
 print(f"bunch current(A): {args.bunch_current}")
 print(f"model: {args.modelname}")
 
+print("plotting figures ...")
 import matplotlib
 matplotlib.use('Agg')
 
@@ -221,7 +223,6 @@ job_id = os.environ.get("SLURM_JOB_ID")
 
 with h5py.File(file_name + '.hdf5', 'r') as f:
     # print("Keys: %s" % f.keys())
-    # print(f.keys())
     group = f["BunchData_1"]
     print(group)
     emit = group["emit"][:]
@@ -236,3 +237,5 @@ for i in range(3):
     plt.xlabel("Number of turns")
     plt.figure(figsize=(8,6))
     plt.savefig(f"/Salah/mbtrack2_outputs/figures/fig_{temps}_{job_id}_cpl.png")
+
+print("Done!")
