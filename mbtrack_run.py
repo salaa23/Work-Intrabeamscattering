@@ -17,6 +17,7 @@ import argparse
 import os
 
 print("initializing ...")
+
 def v24(IDs="close", lat="V004", load_lattice=True):
     """
     Fcc-ee booster lattice to load with AT
@@ -238,6 +239,6 @@ for i in range(3):
     plt.ylabel(f"Emittance epsilon_{elements[i]}(pm)")
     plt.title(f"Emittance of V24 mbt2 at {current*1e3}mA using {args.modelname}")
     plt.xlabel("Number of turns")
-    plt.savefig(f"{current_dir}/m4cast/figures/fig_{temps}_{job_id}_cpl.png")
+    plt.savefig(f"{current_dir}/m4cast/figures/fig_epsi_{elements[i]}_{temps}_{job_id}_cpl.png")
 
 print("Done!")
