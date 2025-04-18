@@ -6,8 +6,9 @@ os.environ["CFLAGS"] = "-w -Wno-maybe-uninitialized"
 _inputs = {
     'mode' : 'z',
     'n_macroparticles' : int(10_000), # number of macroparticles
-    'n_turns' : int(200_000), # number of turns
+    'n_turns' : int(300_000), # number of turns
     #'optics_file' : fodo_json, # optics file in json format
+    'ibs_formalism' : 'kinetic',
     'ibs' : True, # boolean
     'wake' : True, # boolean
     'detuning' : True, # boolean

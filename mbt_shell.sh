@@ -2,7 +2,7 @@
 
 # SLURM options:
 
-#SBATCH --job-name=CIMP_1-3mA    # Nom du job
+#SBATCH --job-name=CIMP_1.3-3mA    # Nom du job
 
 
 
@@ -24,5 +24,5 @@
 # Commandes à soumettre :
 # python script.py <turns> <mp> <current> <model>
 
-python mbtrack_run.py 100_000 10_000 1.3e-3 CIMP
+python mbtrack_run.py 300_000 10_000 1.3245e-3 CIMP
 
