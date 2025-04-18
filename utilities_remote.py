@@ -350,8 +350,8 @@ class _collective_():
                                                      name="ibskick", 
                                                      index=self.index, 
                                                      update_every=1)
-            if self.ibs_formalism == 'nagaitsev':
-                ibs_kick = xf.IBSAnalyticalKick(formalism="B&M", num_slices=self.n_slices_ibs)
+            if self.ibs_formalism == 'analytical':
+                ibs_kick = xf.IBSAnalyticalKick(formalism="Nagaitsev", num_slices=self.n_slices_ibs)
             elif self.ibs_formalism == 'kinetic':
                 ibs_kick = xf.IBSKineticKick(num_slices=self.n_slices_ibs)
             self.line_map = self.env.new_line(name='line_map', components=['ring_map', 'ibskick'])
