@@ -180,12 +180,16 @@ def run_mbtrack2(
     file_name = file_path + "/m4cast/outputs/" + modelname + "_" + str(temps) +"_"+ str(job_id)
     monitor = BunchMonitor(1, 1,buffer_size=10, total_size=n_turns, file_name=file_name)
     ###--------------------------------------------------------------------------------------------------------------
+    n_chunk = 1000
+    chunk_size = int(np.ceil(n_turns/n_chunk))
+    kicksize = 25.6e9 / n_chunk
 
-
-    for i in tqdm(range(n_turns)):
-        for el in tracking_elements:
-            el.track(mybunch)
-        monitor.track(mybunch)
+    for i in tqdm(range(n_chunk)):
+        for j in range(chunk_size):
+             for el in tracking_elements:
+                el.track(mybunch)
+             monitor.track(mybunch)
+        ring.E0 += kicksize
     return file_name, temps
 
 
